@@ -10,6 +10,7 @@
     "test": "node tests",
     "asbuild:debug": "asc assembly/index.ts --target debug",
     "asbuild:release": "asc assembly/index.ts --target release",
+    "asbuild:mem": "asc assembly/index.ts --target release --runtime stub --use Math=JSMath --importMemory",
     "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "start": "npx serve ."
   },

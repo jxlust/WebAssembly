@@ -1,12 +1,14 @@
+const defaultImportsObj = {
+  env: {
+    abort() {
+      throw new Error("wasm error abort...");
+    },
+    abortLog: (_msg, _file, line, column) => console.error(`Abort at ${line}:${column}`),
+  },
+};
 class WasmLoader {
-  constructor() {
-    this._imports = {
-      env: {
-        abort() {
-          throw new Error("wasm error abort...");
-        },
-      },
-    };
+  constructor(imports = defaultImportsObj) {
+    this._imports = imports;
   }
   async wasm(path, imports = this._imports) {
     if (!WebAssembly.instantiateStreaming) {

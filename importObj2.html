@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./script/loader.js"></script>
+  </head>
+  <body>
+    <script>
+      
+    </script>
+    <script type="module">
+      //导入的对象
+      let loader = new WasmLoader({
+        Other: {
+          log(i) {
+            console.log(1);
+          },
+        },
+        env: {
+          abort() {
+            throw new Error("wasm error abort...");
+          },
+          logInteger(i) {
+            console.log("logInteger: " + i);
+          },
+          log(i) {
+            console.log("log1:" + i);
+          },
+        },
+        index: {},
+      });
+      async function startLoader() {
+        // const {testLog } = await loader.wasm(
+        //   "../build/release.wasm"
+        // ); //module
+        const { testLog } = await loader.wasm("./build/release.wasm");
+        // testAbort(100)
+        let n = testLog(10);
+        console.log("n:", n);
+      }
+      startLoader();
+    </script>
+  </body>
+</html>
