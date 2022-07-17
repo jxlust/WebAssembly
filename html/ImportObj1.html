@@ -10,14 +10,18 @@
     <script>
       async function start() {
         const { instance } = await WebAssembly.instantiateStreaming(
-          fetch("./build/release.wasm"),
-          {
-            env: {
-              logInteger(i) {
-                console.log("logInteger2: " + i);
-              },
-            },
-          }
+          fetch("../build/release.wasm"),
+          {}
+          // {
+          //   env: {
+          //     logInteger(i) {
+          //       console.log("logInteger2: " + i);
+          //     },
+          //   },
+          //   Other:{
+          //     log(){}
+          //   }
+          // }
         );
         // const { instance } = module;
         const { testLog } = instance?.exports;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@assemblyscript/loader/umd/index.js"></script>
+    <script src="../script/loader.js"></script>
+  </head>
+  <body>
+    <script>
+      //导入的对象
+      let wasmloader = new WasmLoader({});
+      async function startLoader() {
+        // const {testLog } = await loader.wasm(
+        //   "../build/release.wasm"
+        // ); //module
+        const { getType,__getString} = await wasmloader.wasm("../build/release.wasm");
+        let n = getType(10);
+        //获取到的字符串是内存地址
+        console.log("n:", n);
+        document.write(__getString(n));
+      }
+      startLoader();
+    </script>
+  </body>
+</html>

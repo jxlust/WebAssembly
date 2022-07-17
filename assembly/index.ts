@@ -1,7 +1,8 @@
 // The entry file of your WebAssembly module.
 // import * as other from "./Other";
-import { logInteger, showInteger } from "./env";
-import { addOne, log } from "./Other";
+// import { logInteger, showInteger } from "./env";
+// import { addOne, log } from "./Other";
+import { addTwo } from "./Add";
 function add(a: i32, b: i32): i32 {
   return a + b;
 }
@@ -18,10 +19,13 @@ function testAbort(n: i32): i32 {
 }
 
 // declare function log(n: i32): void;
+// function testLog(n: i32): i32 {
+//   logInteger(n);
+//   log(n);
+//   return n + showInteger(n) + addOne(n);
+// }
 function testLog(n: i32): i32 {
-  logInteger(n);
-  log(n);
-  return n + showInteger(n) + addOne(n);
+  return addTwo(n);
 }
 
 // function testLog(n: i32): void {
@@ -29,3 +33,4 @@ function testLog(n: i32): i32 {
 // }
 
 export { add, fibonacci, testAbort, testLog };
+export { getType } from "./StringDemo";

@@ -2,10 +2,6 @@
   "name": "webassembly",
   "version": "1.0.0",
   "main": "index.js",
-  "dependencies": {
-    "binaryen": "^108.0.0-nightly.20220528",
-    "long": "^5.2.0"
-  },
   "scripts": {
     "test": "node tests",
     "asbuild:debug": "asc assembly/index.ts --target debug",
@@ -17,6 +13,11 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "dependencies": {
+    "@assemblyscript/loader": "^0.20.13",
+    "binaryen": "^108.0.0-nightly.20220528",
+    "long": "^5.2.0"
+  },
   "devDependencies": {
     "assemblyscript": "^0.20.13",
     "benchmark": "^2.1.4"

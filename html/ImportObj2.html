@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="./script/loader.js"></script>
+    <script src="../script/loader.js"></script>
   </head>
   <body>
     <script>
@@ -36,7 +36,7 @@
         // const {testLog } = await loader.wasm(
         //   "../build/release.wasm"
         // ); //module
-        const { testLog } = await loader.wasm("./build/release.wasm");
+        const { testLog } = await loader.wasm("../build/release.wasm");
         // testAbort(100)
         let n = testLog(10);
         console.log("n:", n);
