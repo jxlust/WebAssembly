@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@assemblyscript/loader/umd/index.js"></script> -->
+  <script src="../script/myLoader.js"></script>
+</head>
+
+<body>
+  <script>
+    //导入的对象
+    // const importMemory = new WebAssembly.Memory({ initial: 1,maximum: 10,shared: true });
+    let wasmloader = new WasmLoader({
+      env: {
+        // memory: importMemory,
+        abort(){
+
+        },
+       'Math.random': Math.random
+      },
+      index: {
+        mylog(n) {
+          console.log(`print:${n}`)
+        }
+      },
+      Math
+    });
+    async function startLoader() {
+      const { readMemory, memory, testMath } = await wasmloader.wasm("../build/release.wasm");
+      document.write(testMath(10));
+      document.write('-----' + testMath(20));
+      document.write('<br>')
+      document.write('memory:')
+      //以8位为单位的buffer数组
+      const memoryArray = new Uint8Array(memory.buffer);
+      //00000000 - 11111111
+      //0 - 255
+      document.write(memoryArray[1])
+      document.write('<br>')
+      // memoryArray[2] = 12;//超过255会怎么样
+      memoryArray[2] = 256;// 0
+      memoryArray[2] = 257;// 1
+      //超过最大数值，以 %255 余数展示
+      document.write(readMemory(2))
+
+    }
+    startLoader();
+  </script>
+</body>
+
+</html>

@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node tests",
-    "asbuild:debug": "asc assembly/index.ts --target debug --use Math=JSMath --exportRuntime",
-    "asbuild:release": "asc assembly/index.ts --target release --use Math=JSMath --exportRuntime",
+    "asbuild:debug": "asc assembly/index.ts --target debug  --use Math=JSMath --exportRuntime --runtime stub --importMemory --sourceMap --debug --measure",
+    "asbuild:release": "asc assembly/index.ts --target release --use Math=JSMath",
     "asbuild:mem": "asc assembly/index.ts --target release --runtime stub --use Math=JSMath --importMemory",
     "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "start": "npx serve .",

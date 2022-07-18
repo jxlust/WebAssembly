@@ -5,7 +5,8 @@
 
 5. 外部导入memory
 ```js
-const memory = new WebAssembly.Memory({ initial: 1, shared: true });
+//初始大小为 1 页（64KB），最大值设置为 10 页（640KB）
+const memory = new WebAssembly.Memory({ initial: 1,maximum:10, shared: true });
 //导入对象
 const importObj = {
   env: {
@@ -31,3 +32,8 @@ function readMemory(n: i32): i32 {
 }
 ```
 
+
+>pk 命令配置
+```
+asc assembly/index.ts --target release --use Math=JSMath --exportRuntime -O3 --runtime stub --importMemory --sourceMap --measure
+```
