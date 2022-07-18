@@ -36,6 +36,7 @@
       // memoryArray[2] = 12;//超过255会怎么样
       memoryArray[2] = 256;// 0
       memoryArray[2] = 257;// 1
+      //超过最大数值，以 %255 余数展示
       document.write(readMemory(2))
 
     }
