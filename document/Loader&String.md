@@ -20,6 +20,7 @@ npm i -S @assemblyscript/loader
 3. wasm 一切核心是数字，只是在处理数字
 4. 保存了对字符串的引用，详情可以查看wat文件
 5. loader加载后的实例对象，新增了一些内部解析方法，比如__getString，可以通过指针（引用地址）获取内存的字符串的值
+6. pk命令需要导出运行时：--exportRuntime
 
 <details>
 <summary>__getString 源码</summary>

@@ -2,7 +2,9 @@
 // import * as other from "./Other";
 // import { logInteger, showInteger } from "./env";
 // import { addOne, log } from "./Other";
+declare function mylog(i: f32): void;
 import { addTwo } from "./Add";
+import { readMemory } from './MemoryDemo'
 function add(a: i32, b: i32): i32 {
   return a + b;
 }
@@ -24,13 +26,15 @@ function testAbort(n: i32): i32 {
 //   log(n);
 //   return n + showInteger(n) + addOne(n);
 // }
-function testLog(n: i32): i32 {
-  return addTwo(n);
+function testLog(n: f32): f64 {
+  mylog(f32.sqrt(n));
+  return parseInt(`${n + 1}`, 10);
+  // return addTwo(n);
 }
 
 // function testLog(n: i32): void {
 //   new TestClass().logShow(n);
 // }
 
-export { add, fibonacci, testAbort, testLog };
+export { add, fibonacci, testAbort, testLog ,readMemory};
 export { getType } from "./StringDemo";
