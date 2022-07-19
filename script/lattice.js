@@ -11,15 +11,22 @@ const randomInt = (n) => {
   return (Math.random() * n) | 0;
 };
 
-const memory = new WebAssembly.Memory({
-  initial: 10,
-  maximum: 100,
+const initMemory = new WebAssembly.Memory({
+  initial: 1,
+  // maximum: 100,
 });
 
 async function loaderTheWasm() {
   const { instance } = await WebAssembly.instantiateStreaming(
     fetch("../build/release.wasm"),
-    { env: { memory: memory } }
+    {
+      env: { memory: initMemory },
+      index: {
+        myLog(n) {
+          console.log(n);
+        },
+      },
+    }
   );
   return instance?.exports;
 }
@@ -56,11 +63,15 @@ document.addEventListener("keyup", () => {
   curControl = Controls.None;
 });
 
-function update(wasm, mem, imageData, rgba32) {
+function update(wasm, memoryArrayBuffer, imageData) {
   wasm.update(wasm[curControl]);
-  console.log("mem::", mem);
+  const sliceBuffer = memoryArrayBuffer.slice(
+    wasm.CANVAS_POINTER.valueOf(),
+    wasm.CANVAS_SIZE.valueOf()
+  );
+  imageData.data.set(sliceBuffer);
   //   rgba32.set(mem.subArray(0, SIZE));
-  //   ctx.putImageData(imageData, 0, 0);
+  ctx.putImageData(imageData, 0, 0);
 }
 
 function randomDraw() {
@@ -78,35 +89,33 @@ function randomDraw() {
   }
   ctx.putImageData(imgData, 0, 0);
 }
-function testMemory() {
-  let mem2 = new Uint32Array(memory.buffer);
-  for (let i = 0; i < 10; i++) {
-    mem2[i] = i;
-  }
-  const sum = module.compulate(0, 10);
-  console.log("sum:", sum);
-}
 
 async function start() {
-  let module = await loaderTheWasm();
+  const module = await loaderTheWasm();
   console.log(module);
   module.start();
+  const { memory } = module;
   //初始化对应的内存数据，用于传递到wasm里处理
   // 32bit => 8bit color * 4 (RGBA)
-  let mem = new Uint32Array(module.memory.buffer);
-  console.log("mem::", mem);
+  const memoryArrayBuffer = new Uint8Array(memory.buffer);
+  console.log("memoryArrayBuffer:", memoryArrayBuffer);
   //   let mem = new Uint32Array(memory.buffer);
   //   console.log(11, module?.fibonacci(10));
   const imageData = ctx.createImageData(WIDTH, HEIGHT);
-  const rgba32Buffer = new Uint32Array(imageData.data.buffer);
   //   console.log("create imageData:", imageData);
+  update(module, memoryArrayBuffer, imageData);
 
-//   const updateCallBack = (timestamp) => {
-//     // console.log("raf call:", timestamp);
-//     update(module, mem, imageData, rgba32Buffer);
-//     window.requestAnimationFrame(updateCallBack);
-//   };
-//   window.requestAnimationFrame(updateCallBack);
+  // const updateCallBack = (timestamp) => {
+  //   // console.log("raf call:", timestamp);
+  //   update(module, mem, imageData, rgba32Buffer);
+  //   window.requestAnimationFrame(updateCallBack);
+  // };
+  // window.requestAnimationFrame(updateCallBack);
+}
+
+function createImageData() {
+  const imageData = ctx.createImageData(WIDTH, HEIGHT);
+  const rgba32Buffer = new Uint32Array(imageData.data.buffer);
 }
 
 start();

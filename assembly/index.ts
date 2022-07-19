@@ -1,48 +1,37 @@
-// The entry file of your WebAssembly module.
-// import * as other from "./Other";
-// import { logInteger, showInteger } from "./env";
-// import { addOne, log } from "./Other";
-// import { Math as JSMath } from "bindings/dom";
-declare function mylog(i: f32): void;
-// declare const JSMath: {random: };
-// declare Math;
-import { addTwo } from "./Add";
-import { readMemory } from "./MemoryDemo";
-function add(a: i32, b: i32): i32 {
-  return a + b;
+declare function myLog(n: i32): void;
+export enum Control {
+  Left = 1,
+  Right = 2,
+  Top = 3,
+  Bottom = 4,
 }
-
-function fibonacci(n: i32): i32 {
-  if (n < 2) return 1;
-  return fibonacci(n - 1) + fibonacci(n - 2);
-}
-function testAbort(n: i32): i32 {
-  if (n === 100) {
-    // abort();
+export const CANVAS_WIDTH: i32 = 100;
+export const CANVAS_HEIGHT: i32 = 100;
+export const CANVAS_SIZE: i32 = CANVAS_WIDTH * CANVAS_HEIGHT * 4;
+export const CANVAS_POINTER: i32 = 0; //指针内存从零开始
+memory.grow(1); //新增一页大小+64kb
+function start(): void {
+  for (let i = 0; i < CANVAS_HEIGHT; i++) {
+    for (let j = 0; j < CANVAS_WIDTH; j++) {
+      //第几个点
+      let p = i * CANVAS_WIDTH + j;
+      //索引
+      let pIndex = p * 4;
+      //RGBA
+      store<u8>(CANVAS_POINTER + pIndex + 0, 255);
+      store<u8>(CANVAS_POINTER + pIndex + 1, 0);
+      store<u8>(CANVAS_POINTER + pIndex + 2, 0);
+      store<u8>(CANVAS_POINTER + pIndex + 3, 255);
+    }
   }
-  return n;
 }
 
-// declare function log(n: i32): void;
-// function testLog(n: i32): i32 {
-//   logInteger(n);
-//   log(n);
-//   return n + showInteger(n) + addOne(n);
-// }
-function testLog(n: f32): f64 {
-  mylog(f32.sqrt(n));
-  return parseInt(`${n + 1}`, 10);
-  // return addTwo(n);
-}
-function testMath(n: i32): i32 {
-  // mylog(Math.random() * n);
-  return <i32>(JSMath.random() * n);
-  // return <i32>(NativeMath.random() * n);
+function update(control: Control): void {
+  myLog(control);
 }
 
-// function testLog(n: i32): void {
-//   new TestClass().logShow(n);
-// }
+function getCanvasBuffer(n: i32): u8 {
+  return load<u8>(n);
+}
 
-export { add, fibonacci, testAbort, testLog, readMemory, testMath };
-export { getType } from "./StringDemo";
+export { update, start, getCanvasBuffer };
