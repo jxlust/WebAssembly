@@ -5,7 +5,8 @@
 ### 1. WASM 是什么
 
 WebAssembly 是一种底层类汇编语言，能在 Web 平台上以趋近原生应用的速度运行。C/C++/Rust 等语言将 Wasm 作为编译目标语言，可以将已有的代码移植到 Web 平台中运行，以提升代码复用度。
->**High-Level  ->  Assembly -> Binary**
+
+> **High-Level -> Assembly -> Binary**
 
 官网上所说的特性：
 ![特性](./img/img3.jpg)
@@ -115,8 +116,8 @@ npm install --save-dev benchmark
 
 ```js
 // benchmark.js
-import Benchmark from 'benchmark'
-import { assemblyFunc } from 'xx'
+import Benchmark from "benchmark";
+import { assemblyFunc } from "xx";
 function jsFunc(x) {}
 const suite = new Benchmark.Suite();
 const startNumber = 2;
@@ -159,3 +160,4 @@ suite
 5. jixiaohua cnblogs: _[https://www.cnblogs.com/jixiaohua/p/10447701.html](https://www.cnblogs.com/jixiaohua/p/10447701.html)_
 6. 参考文章: _[https://wanghi.cn/202003/19319.html](https://wanghi.cn/202003/19319.html)_
 7. 参考文章: _[https://mp.weixin.qq.com/s/vI8sNWibmv44MJuVkiQAew](https://mp.weixin.qq.com/s/vI8sNWibmv44MJuVkiQAew)_
+8. webassembly example: _[WebAssembly 学习例子](https://wasmbyexample.dev/home.en-us.html#)_
