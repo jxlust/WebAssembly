@@ -16,14 +16,14 @@ const Controls = {
 };
 
 let curControl = Controls.None;
-
+let rafId = null;
 let rafStartTime = 0;
 const randomInt = (n) => {
   return (Math.random() * n) | 0;
 };
 
 const initMemory = new WebAssembly.Memory({
-  initial: 1,
+  initial: 2,
   // maximum: 100,
 });
 
@@ -99,9 +99,11 @@ function randomDraw() {
 }
 
 async function start() {
+  // console.time('up');
   const module = await loaderTheWasm();
+  // console.timeEnd()
   console.log(module);
-  module.start();
+  // module.start();
   const { memory } = module;
   //初始化对应的内存数据，用于传递到wasm里处理
   // 32bit => 8bit color * 4 (RGBA)
@@ -111,21 +113,26 @@ async function start() {
   //   console.log(11, module?.fibonacci(10));
   const imageData = ctx.createImageData(WIDTH, HEIGHT);
   //   console.log("create imageData:", imageData);
-
   const updateCallBack = (timestamp) => {
     // console.log("raf call:", timestamp);
     if (rafStartTime === 0) {
       rafStartTime = timestamp;
     }
     let diff = timestamp - rafStartTime;
-    if (diff >= 1000) {
+    //diff 0代表第一次也要执行
+    if (diff >= 1000 || diff === 0) {
       rafStartTime = timestamp;
       update(module, memoryArrayBuffer, imageData);
     }
-    window.requestAnimationFrame(updateCallBack);
+    rafId = window.requestAnimationFrame(updateCallBack);
   };
-  window.requestAnimationFrame(updateCallBack);
+  rafId = window.requestAnimationFrame(updateCallBack);
+  document.body.removeChild(document.getElementById("loadId"));
 }
+
+setTimeout(() => {
+  cancelAnimationFrame(rafId);
+}, 10000);
 
 function createImageData() {
   const imageData = ctx.createImageData(WIDTH, HEIGHT);
