@@ -7,6 +7,17 @@ const ctx = canvas.getContext("2d");
 canvas.height = HEIGHT;
 canvas.width = WIDTH;
 
+const Controls = {
+  None: "Controls.None",
+  Up: "Controls.Up",
+  Down: "Controls.Down",
+  Left: "Controls.Left",
+  Right: "Controls.Right",
+};
+
+let curControl = Controls.None;
+
+let rafStartTime = 0;
 const randomInt = (n) => {
   return (Math.random() * n) | 0;
 };
@@ -20,7 +31,13 @@ async function loaderTheWasm() {
   const { instance } = await WebAssembly.instantiateStreaming(
     fetch("../build/release.wasm"),
     {
-      env: { memory: initMemory },
+      env: {
+        memory: initMemory,
+        "Math.random": Math.random,
+        abort(e) {
+          console.log("abort:", e);
+        },
+      },
       index: {
         myLog(n) {
           console.log(n);
@@ -30,16 +47,6 @@ async function loaderTheWasm() {
   );
   return instance?.exports;
 }
-
-const Controls = {
-  None: "Controls.None",
-  Up: "Controls.Up",
-  Down: "Controls.Down",
-  Left: "Controls.Left",
-  Right: "Controls.Right",
-};
-
-let curControl = Controls.None;
 
 document.addEventListener("keydown", (event) => {
   console.log(event);
@@ -69,6 +76,7 @@ function update(wasm, memoryArrayBuffer, imageData) {
     wasm.CANVAS_POINTER.valueOf(),
     wasm.CANVAS_SIZE.valueOf()
   );
+  // ctx.clearRect(0, 0, WIDTH, HEIGHT);
   imageData.data.set(sliceBuffer);
   //   rgba32.set(mem.subArray(0, SIZE));
   ctx.putImageData(imageData, 0, 0);
@@ -103,14 +111,20 @@ async function start() {
   //   console.log(11, module?.fibonacci(10));
   const imageData = ctx.createImageData(WIDTH, HEIGHT);
   //   console.log("create imageData:", imageData);
-  update(module, memoryArrayBuffer, imageData);
 
-  // const updateCallBack = (timestamp) => {
-  //   // console.log("raf call:", timestamp);
-  //   update(module, mem, imageData, rgba32Buffer);
-  //   window.requestAnimationFrame(updateCallBack);
-  // };
-  // window.requestAnimationFrame(updateCallBack);
+  const updateCallBack = (timestamp) => {
+    // console.log("raf call:", timestamp);
+    if (rafStartTime === 0) {
+      rafStartTime = timestamp;
+    }
+    let diff = timestamp - rafStartTime;
+    if (diff >= 1000) {
+      rafStartTime = timestamp;
+      update(module, memoryArrayBuffer, imageData);
+    }
+    window.requestAnimationFrame(updateCallBack);
+  };
+  window.requestAnimationFrame(updateCallBack);
 }
 
 function createImageData() {
