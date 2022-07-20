@@ -22,7 +22,8 @@
   "devDependencies": {
     "assemblyscript": "^0.20.13",
     "benchmark": "^2.1.4",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "pngjs": "^6.0.0"
   },
   "type": "module",
   "exports": {
