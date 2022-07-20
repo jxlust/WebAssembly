@@ -1,6 +1,5 @@
 declare function myLog(n: i32): void;
 memory.grow(1); //新增一页大小+64kb
-
 export enum Controls {
   Left = 1,
   Right = 2,
