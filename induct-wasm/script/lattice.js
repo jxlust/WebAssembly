@@ -23,7 +23,7 @@ const randomInt = (n) => {
 };
 
 const initMemory = new WebAssembly.Memory({
-  initial: 2,
+  initial: 1,
   // maximum: 100,
 });
 
