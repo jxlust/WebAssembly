@@ -1,0 +1,35 @@
+{
+  "name": "starry-sky",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests",
+    "asbuild:debug": "asc assembly/index.ts --target debug  --use Math=JSMath --exportRuntime --runtime stub --importMemory --sourceMap --debug --measure",
+    "asbuild:release": "asc assembly/index.ts --target release --use Math=JSMath --importMemory",
+    "asbuild:mem": "asc assembly/index.ts --target release --runtime stub --use Math=JSMath --importMemory",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release",
+    "start": "npx serve .",
+    "server": "node server/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@assemblyscript/loader": "^0.20.13",
+    "binaryen": "^108.0.0-nightly.20220528",
+    "long": "^5.2.0"
+  },
+  "devDependencies": {
+    "assemblyscript": "^0.20.13",
+    "benchmark": "^2.1.4",
+    "express": "^4.18.1",
+    "pngjs": "^6.0.0"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/release.js",
+      "types": "./build/release.d.ts"
+    }
+  }
+}

@@ -9,7 +9,7 @@ WebAssembly 是一种底层类汇编语言，能在 Web 平台上以趋近原生
 > **High-Level -> Assembly -> Binary**
 
 官网上所说的特性：
-![特性](./img/img3.jpg)
+![特性](./assets/img/img3.jpg)
 
 而 Wasm 官网给出的定义是 —— WebAssembly（缩写为 Wasm）是一种基于栈式虚拟机的二进制指令格式。Wasm 被设计成为一种编程语言的可移植编译目标，可以通过将其部署到 Web 平台上，使其为客户端和服务端应用程序提供服务。
 
@@ -26,7 +26,7 @@ const sum = (a, b, c) => a + b + c;
 这是 一个求和函数，可以直接放在浏览器的控制台下运行，如果传参都是整数时，结果是整数相加的结果：如，答案是 6。但是，如果至少有一个是字符串，则结果是按照字符串拼接出的结果，如 console.log(sum('1',2,3))，答案是 "123"。也就是说，JIT 在遇到第一个 sum 时会编译成整数相加的机器码；但是在碰到第二个 sum 调用时，不得不重新编译一遍。这样一来，JIT 带来的效率提升便被抵消了。
 
 随着 JS 达到了性能天花板，在当前复杂密集运算及游戏面前已完全力不从心。无法满足一些大型 web 项目开发，于是三大浏览器巨头分别提出了自己的解决方案：
-![history](./img/img5.png)
+![history](./assets/img/img5.png)
 
 我们熟知的四大主流浏览器厂商 Google Chrome、Apple Safari、Microsoft Edge 和 Mozilla FireFox ,觉得 Mozilla FireFox 所推出的 asm.js 很有前景，为了让大家都能使用，于是他们就共同参与开发，基于 asm.js 制定一个标准，也就是 WebAssembly。
 
@@ -44,10 +44,10 @@ JavaScript 是解释型语言，也是动态类型语言。如果变量类型是
 通过一条指令，编译器就能知道变量 x 的类型和内存位置。但是对于 JavaScript 中相同的操作，每次执行程序时，引擎都必须检查它是整数还是浮点数，或者任何其他有效的数据类型。所以 JavaScript 中的每条指令都要经过几次类型检查和转换，这会影响到它的执行速度。
 
 JavaScript 运行代码花费时间：
-![jstime](./img/img1.webp)
+![jstime](./assets/img/img1.webp)
 
 WASM 运行花费时间：
-![wasmtime](./img/img2.webp)
+![wasmtime](./assets/img/img2.webp)
 
 - **JavaScript**：在浏览器中，对 JavaScript 源码进行解析，生成抽象语法树或者字节码（parse），JIT 编译器会对生成的代码进行编译优化，当然后当发生去优化时，再去重新编译优化，最后执行。
 
